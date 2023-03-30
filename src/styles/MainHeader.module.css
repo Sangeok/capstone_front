@@ -5,6 +5,7 @@
     display : flex;
     justify-content: space-between;
     font-family: 'Days One', sans-serif;
+    z-index: 1;
 }
 
 .main__header ul {

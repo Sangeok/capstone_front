@@ -1,14 +1,18 @@
-import {useEffect, useState} from "react";
+import {React, useEffect, useState, memo} from "react";
+
 import styles from "../styles/Home.module.css";
 import styled from 'styled-components';
+
 import image1 from "../backgroundImage/image1.jpg";
 import image2 from "../backgroundImage/image2.jpg";
 import image3 from "../backgroundImage/image3.jpg";
+
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 
-function Home() {
+const Home = () => {
     // fade-in으로 img를 생성하기 위해 styled-components를 사용
     const StyledImg = styled.img`
         animation: fadein 3s;
@@ -49,6 +53,7 @@ function Home() {
         }
     `
 
+
     let imageArr = [image1,image2,image3];
     const [mainImage, setMainImage] = useState(image1);
     let [lastRandom, setLastRandom] = useState(0);
@@ -62,29 +67,26 @@ function Home() {
             }
             setMainImage(imageArr[random]);
             setLastRandom(random);
-        }, 15000)
+        }, 20000)
         return () => clearInterval(randomImage);
     }, [imageArr])
 
-
     return (
-        // 문제가 어디서 background에 video를 넣느냐..
-        // 내 생각에는 Home에서 background로 video를 넣는게 맞다.
         <div className={styles.home}>
             <div className ={styles.image__content}>
                 <StyledImg src={mainImage} alt="backgroundImage error"/>
             </div>
             <div className={styles.content}>
-                <div>
-                    <div>여행, 거기가 어디던 최고이길!</div>
-                    <div>당신이 찾는 관광지, 여기 있다!</div>
+                <div className={styles.main__content}>
+                    <div>요양, 걱정마세요.</div>
+                    <div>노후 요양을 책임져 드릴게요.</div>
                 </div>
                 <div/>
                 <div/>
             </div>
             <div className={styles.footer}>
                 <div className={styles.copy}>
-                    COPYRIGHT 2023 BY WHERE WE GO? ALL RIGHT RESERVED
+                    COPYRIGHT 2023 BY SILVER ALL RIGHT RESERVED
                 </div>
                 <div className={styles.icon}>
                     <span><a href ="https://github.com/boomaye36/capstone_project"><FontAwesomeIcon icon={faGithub}/></a></span>
@@ -95,4 +97,5 @@ function Home() {
     );
 }
 
-export default Home;
+// memo로 home을 감싸게 되어, store.js(redux)내에 존재하는 state가 변경되어도 불필요한 재렌더링을 하지 않는다.
+export default memo(Home);

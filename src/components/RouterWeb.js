@@ -1,6 +1,8 @@
 import {Routes, Route} from "react-router-dom";
 import MainHeader from "./MainHeader.js"
 import Home from "../routes/Home.js"
+import MyProfile from "../routes/MyProfile.js";
+import Auth from "../routes/Auth.js";
 
 function RouterWeb({isLoggedIn}) {
     return (
@@ -10,12 +12,16 @@ function RouterWeb({isLoggedIn}) {
                     <>
                         <Route path="/" element={<Home />}/>
                         {
-                            // isLoggedIn ? (
-
-                            // )
-                            // : (
-
-                            // )
+                            isLoggedIn ? (
+                                <>
+                                    <Route path="/myprofile" element={<MyProfile/>}></Route>
+                                </>
+                            )
+                            : (
+                                <>
+                                    <Route path="/auth" element={<Auth/>}></Route>
+                                </>
+                            )
                         }
                     </>
                 </Routes>
