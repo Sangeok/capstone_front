@@ -10,6 +10,7 @@ function RouterWeb({isLoggedIn}) {
                 <MainHeader isLoggedIn={isLoggedIn}/>
                 <Routes>
                     <>
+                        
                         <Route path="/" element={<Home />}/>
                         {
                             isLoggedIn ? (

@@ -9,16 +9,16 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faHospital } from '@fortawesome/free-solid-svg-icons';
 
 import { useDispatch, useSelector } from "react-redux";
-import { changeState } from "../store";
 
 import FindFacility from "../components/FindFacility";
- 
+import { changeState } from "../store.js"; 
 
 function MainHeader() {
 
     // store.js로 요청을 보냄.
     let dispatch = useDispatch();
     let showModal= useSelector((state)=> {return state.showModal});
+
     const StyledLink = styled(Link)`
         color : black;
         font-weight : 800;
@@ -31,6 +31,9 @@ function MainHeader() {
         cursor: "pointer",
     }
 
+
+
+    {/* home이 아닌 다른 route라면 redux의 HeaderState를 변경 */}
     return (
         <div className={styles.main__header}>
             <ul>
@@ -46,6 +49,7 @@ function MainHeader() {
                         }style={style}><FontAwesomeIcon icon={faMagnifyingGlass}/> 시설검색</div>
                 </li>
                 <li>
+                    {/* 문제 : 이렇게하면 고정된 header를 다시 클릭하면 상태가 변경됨... 즉 useEffect로 각 routes에서 dispatch를 하는 것이 좋아보임. */}
                     <StyledLink to="/bestDetail"><FontAwesomeIcon icon={faHospital}/> 요양 시설찾기</StyledLink>
                 </li>
                 <li>

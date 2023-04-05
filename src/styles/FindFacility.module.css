@@ -1,0 +1,36 @@
+.modal {
+    text-align: center;
+}
+
+.modal__body {
+    display : flex;
+    justify-content: center;
+    
+}
+
+.search__box {
+    width: 400px;
+    height: 40px;
+    border-radius: 40px;
+    border: solid 2px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 2px 2px 2px 1px gray;
+}
+
+.search__input {
+    width : 350px;
+    border : 0px;
+    border-color: white;
+    outline : none;
+    /* 마진을 줘서 왼쪽으로부터 살짝 떨어지게 검색하도록 함 */
+    margin-left: 10px;
+}
+
+.search__box button {
+    border: none;
+    /* 부모요소와 background 색깔을 같게 한다. */
+    background-color: inherit;
+    margin-right : 10px;
+}
