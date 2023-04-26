@@ -5,7 +5,7 @@ const initialState = {
 };
 
 // state 느낌
-let showModal = createSlice({
+const showModal = createSlice({
     // state 이름
     name : 'showSearchModal',
     // value

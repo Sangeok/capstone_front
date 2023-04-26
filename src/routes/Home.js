@@ -7,7 +7,6 @@ import image1 from "../backgroundImage/image1.jpg";
 import image2 from "../backgroundImage/image2.jpg";
 import image3 from "../backgroundImage/image3.jpg";
 
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
