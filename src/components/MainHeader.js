@@ -13,13 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FindFacility from "../components/FindFacility";
 import { changeState } from "../store.js"; 
 
-function MainHeader() {
-
-    // store.js로 요청을 보냄.
-    let dispatch = useDispatch();
-    let showModal= useSelector((state)=> {return state.showModal});
-
-    const StyledLink = styled(Link)`
+const StyledLink = styled(Link)`
         color : black;
         font-weight : 800;
         text-decoration: none;
@@ -30,6 +24,12 @@ function MainHeader() {
         fontWeight : "800",
         cursor: "pointer",
     }
+    
+function MainHeader() {
+
+    // store.js로 요청을 보냄.
+    let dispatch = useDispatch();
+    let showModal= useSelector((state)=> {return state.showModal});
 
 
 

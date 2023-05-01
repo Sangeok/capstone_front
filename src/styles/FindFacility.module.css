@@ -1,6 +1,6 @@
-.modal {
+/* .modal {
     text-align: center;
-}
+} */
 
 .modal__body {
     display : flex;
@@ -33,4 +33,9 @@
     /* 부모요소와 background 색깔을 같게 한다. */
     background-color: inherit;
     margin-right : 10px;
+}
+
+.search__result {
+    list-style: none;
+    height : 500px;
 }

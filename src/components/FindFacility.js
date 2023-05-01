@@ -8,6 +8,8 @@ import { changeState } from "../store.js";
 
 import styles from "../styles/FindFacility.module.css";
 
+import SearchFacility from "./SearchFacility.js";
+
 // 이게 있어야 modal로 뜸
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -16,9 +18,24 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 function FindFacility() {
 
+    // BIZPLC_NM : API 병원 이름
+    const [hospitals, setHospitals] = useState([]);
     const [search, setSearch] = useState("");
+
+    useEffect(()=>{
+        fetch("https://openapi.gg.go.kr/RecuperationHospital?KEY=e773163cf73d429b81008f1c8b081444&Type=json")
+        .then((response)=>response.json())
+        .then((json)=>{
+            setHospitals(json.RecuperationHospital[1].row);
+        });
+    },[])
+
+    const searched = hospitals.filter((item)=>
+        item.BIZPLC_NM.includes(search)
+    );
+
     const onChange = (event) => {
-        setSearch(event.target.value);
+        setSearch(event.target.value); // 입력값을 전부 소문자로 생각
     }
 
     let dispatch = useDispatch();
@@ -35,7 +52,9 @@ function FindFacility() {
 
     return (
         <>
-
+        {
+            console.log(hospitals)
+        }
         <Modal
             show={showModal} 
             onHide={handleClose}
@@ -65,17 +84,23 @@ function FindFacility() {
                     </div>
                 </form>
                 </Modal.Body>
-                <ul>
-                    <li>
-                        결과1
-                    </li>
-                    <li>
-                        결과2
-                    </li>
-                    <li>
-                        결과3
-                    </li>
-                </ul>
+                <div className = {styles.search__result}>
+                    {
+                        // search라는 state에 무언가 입력되지 않으면 아무것도 보이지 않음. 무언가 입력이 되었다면 그때 병원을 찾아서 사용자에게 보여줌.
+                        search ? (
+                        searched.map((item)=>{
+                            return (
+                                <>
+                                    <li>
+                                        {item.BIZPLC_NM}
+                                    </li>
+                                </>
+                            )
+                        })
+                        ) :
+                        null
+                    }
+                </div>
 
             
         </Modal>
