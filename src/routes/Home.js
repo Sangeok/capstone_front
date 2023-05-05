@@ -52,11 +52,29 @@ animation: fadein 3s;
 `
 
 const Home = () => {
-
+    // const authURL = 'https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json';
+    // const [accessToken, setAccessToken] = useState();
+    // const consumer__key = '1c08dccc70914d3bbde1';
+    // const consumer_secret = '8a0afa457e9a47ca9976';
 
     let imageArr = [image1,image2,image3];
     const [mainImage, setMainImage] = useState(image1);
     let [lastRandom, setLastRandom] = useState(0);
+
+    // const getAccessToken = async() => {
+    //     try {
+    //         const response = await fetch(
+    //             `https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json?consumer_key=${consumer__key}&consumer_secret=${consumer_secret}`
+    //         );
+    //         const json = await response.json();
+    //         console.log(json);
+    //         setAccessToken(json.result.accessToken);
+    //         // getAccessToken는 비동기 함수이므로 getKorea가 useEffect에 같이 있으면 accessToken에 값이 부여 안될수도 있음.
+    //     }
+    //     catch(error){
+    //         console.log('error' + error);
+    //     }
+    // }
 
     useEffect(()=>{
         const randomImage = setInterval(()=>{
@@ -68,6 +86,7 @@ const Home = () => {
             setMainImage(imageArr[random]);
             setLastRandom(random);
         }, 20000)
+        // getAccessToken();
         return () => clearInterval(randomImage);
     }, [imageArr])
 
