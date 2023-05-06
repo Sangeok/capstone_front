@@ -35,27 +35,51 @@ function FindFacility({accessToken}) {
     // AcessToken이 4시간마다 변경되므로 사이트에서 계속 가져와야함...
     const [koreaOne, setKoreaOne] = useState([]);
     const [koreaTwo, setKoreaTwo] = useState([]);
+    const [getCd, setGetCd] = useState();
+    const [regionOne, setRegionOne] = useState("지역");
+    const [regionTwo, setRegionTwo] = useState("시/군/구");
 
-    const getKorea1 = async() => {
+    const url1 = `https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json?accessToken=${accessToken}`;
+    const url2 = `https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json?accessToken=${accessToken}&cd=${getCd}`
+
+    const getKoreaAddress = async() => {
+        let url;
+        if(getCd === undefined) {
+            url = url1;
+        }
+        else url = url2;
+
         try {
             const response = await fetch(
-                `https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json?accessToken=${accessToken}`
+                url
             )
             const json = await response.json();
             console.log(json.result);
-            setKoreaOne(json.result);
-
+            if(getCd === undefined) {
+                setKoreaOne(json.result);
+            }
+            else setKoreaTwo(json.result);
         }
         catch(error) {
             console.log('error' + error);
-            
         }
+    }
+
+    const onClickValue = (item,number) => {
+        if(number === 1) {
+            setGetCd(item.cd);
+            setRegionOne(item.addr_name);
+        }
+        else if(number === 2) {
+            setRegionTwo(item.addr_name);
+        }
+
     }
 
     useEffect(()=>{
         // 새로고침시, accessToken에 값이 안 들어옴. 즉 새로고침 누를 시 home으로 사용자가 갔다오게 해야함.
-        getKorea1();
-    },[])
+        getKoreaAddress();
+    },[getCd])
 
       
       
@@ -68,13 +92,13 @@ function FindFacility({accessToken}) {
                 <ul>
                     <li>
                         <DropDownContainer>
-                            <button><FontAwesomeIcon icon={faMap}/> 지역</button>
+                            <button><FontAwesomeIcon icon={faMap}/> { regionOne}</button>
                             <DropDownContent>
                                 {
                                     koreaOne.map((item)=>{
                                         return (
                                             <>
-                                                <div key={item.cd}>{item.addr_name}</div>
+                                                <div onClick={()=>onClickValue(item,1)} key={item.cd}>{item.addr_name}</div>
                                             </>
                                         )
                                     })    
@@ -83,7 +107,20 @@ function FindFacility({accessToken}) {
                         </DropDownContainer>
                     </li>
                     <li>
-                        <button><FontAwesomeIcon icon={faMapLocationDot}/> 시/군/구</button>
+                        <DropDownContainer>
+                        <button><FontAwesomeIcon icon={faMapLocationDot}/> { regionTwo}</button>
+                        <DropDownContent>
+                                {
+                                    koreaTwo.map((item)=>{
+                                        return (
+                                            <>
+                                                <div onClick={()=>onClickValue(item,2)} key={item.cd}>{item.addr_name}</div>
+                                            </>
+                                        )
+                                    })    
+                                }
+                            </DropDownContent>
+                        </DropDownContainer>
                     </li>
                     <li>
                         <button><FontAwesomeIcon icon={faMagnifyingGlassLocation}/> 조회</button>
