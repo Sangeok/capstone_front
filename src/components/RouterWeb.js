@@ -8,6 +8,7 @@ import FindFacility from "../routes/FindFacility.js";
 
 function RouterWeb({isLoggedIn}) {
     const [accessToken, setAccessToken] = useState();
+    const [curLocation, setCurLocation] = useState({});
     const consumer__key = '1c08dccc70914d3bbde1';
     const consumer_secret = '8a0afa457e9a47ca9976';
 
@@ -26,6 +27,14 @@ function RouterWeb({isLoggedIn}) {
     }
 
     useEffect(()=>{
+        navigator.geolocation.getCurrentPosition(function(pos){
+            console.log("postion : " + pos);
+            var positionObJ = {
+                latitude : pos.coords.latitude,
+                longitude : pos.coords.longitude
+            }
+            setCurLocation(positionObJ);
+        })
         getAccessToken();
     },[])
 
@@ -49,7 +58,7 @@ function RouterWeb({isLoggedIn}) {
                                 </>
                             )
                         }
-                        <Route path="/facility" element={<FindFacility accessToken={accessToken}/>}/>
+                        <Route path="/facility" element={<FindFacility accessToken={accessToken} curLocation={curLocation}/>}/>
                     </>
                 </Routes>
             </div>
