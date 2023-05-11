@@ -1,10 +1,7 @@
 import {useState, useEffect, Component} from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import styles from "../styles/FindFacility.module.css";
+import styles from "../styles/FindWantsLoc.module.css";
 import styled from "styled-components";
-
-import UserLocFacility from "../components/UserLocFacility.js";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMap } from "@fortawesome/free-solid-svg-icons";
@@ -32,8 +29,7 @@ const DropDownContainer = styled.div`
     }
 `
 
-// 현재 위치 기반으로 먼저 요양병원 시설을 찾아줌.
-function FindFacility({accessToken, userLocationOne ,userLocationTwo}) {
+function FindWantsLoc({accessToken, userLocationOne ,userLocationTwo}) {
     const navigate = useNavigate();
     // AcessToken이 4시간마다 변경되므로 사이트에서 계속 가져와야함...
     const [koreaOne, setKoreaOne] = useState([]);
@@ -42,10 +38,11 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo}) {
     const [regionOne, setRegionOne] = useState("지역");
     const [regionTwo, setRegionTwo] = useState("시/군/구");
 
-    // const [locSearch, setLocSearch] = useState(false);
-
     const url1 = `https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json?accessToken=${accessToken}`;
     const url2 = `https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json?accessToken=${accessToken}&cd=${getCd}`;
+
+    // 현재 내 위치정보 api(Js로 된 경도 위도 값이어야 하는지 혹은 저 api로만 가능한지는.. 추가로 확인해야함)
+    //https://www.google.com/search?q=Geolocation+API+react&sxsrf=APwXEdct3TXu7Q9wbp4IvbdpSXLo4Tzm9g%3A1683382957602&ei=rWJWZLqbJJjt2roP4YiU0AQ&ved=0ahUKEwj6pdWZ8uD-AhWYtlYBHWEEBUoQ4dUDCA8&uact=5&oq=Geolocation+API+react&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIFCAAQgAQyBAgAEB4yBAgAEB4yBggAEAUQHjIGCAAQCBAeOggIABAIEB4QCkoECEEYAFAAWJohYJQiaAVwAXgBgAHlAYgB6g6SAQYwLjEwLjGYAQCgAQKgAQHAAQE&sclient=gws-wiz-serp#fpstate=ive&vld=cid:d8b1e2a7,vid:bwrWkjM2xWw
 
     // 시/도 그리고 시/도에 대한 값을 가져왔다면 해당 시/군/구에 대한 정보를 가져오게할 API
     const getKoreaAddress = async() => {
@@ -60,23 +57,11 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo}) {
                 url
             )
             const json = await response.json();
-            console.log(json);
+            console.log(json.result);
             if(getCd === undefined) {
                 setKoreaOne(json.result);
             }
-            else {
-                // KoreaTwo에는 addr_name(ex 안산시 단원구)에서 4번째 index까지만 저장하도록 함.
-                let arr = [];
-                for(var i = 0; i<json.result.length; i++) {
-                    let str = json.result[i].addr_name;
-                    let strSlice = str.slice(0,4);
-                    // 공백 제거 후 arr에 push(공백이 문제를 일으킴.)
-                    arr.push(strSlice.replace(/\s/g, ""));
-                }
-                // 중복 제거 array
-                let uniqueArr = Array.from(new Set(arr));
-                setKoreaTwo(uniqueArr);
-            }
+            else setKoreaTwo(json.result);
         }
         catch(error) {
             console.log('error' + error);
@@ -84,14 +69,12 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo}) {
     }
 
     const onClickValue = (item,number) => {
-        // setLocSearch(false);
         if(number === 1) {
             setGetCd(item.cd);
             setRegionOne(item.addr_name);
         }
         else if(number === 2) {
-            // 뒤에 구체적인 "구"까지 나오는 것에 대해 통일성을 부여하기 위해 4까지 자름.
-            setRegionTwo(item);
+            setRegionTwo(item.addr_name);
         }
 
     }
@@ -99,8 +82,8 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo}) {
     const checkUserLocation = () => {
         if(userLocationOne) {
             setRegionOne(userLocationOne);
-            // 뒤에 구체적인 "구"까지 나오는 것에 대해 통일성을 부여하기 위해 4까지 자름.
-            setRegionTwo(userLocationTwo.slice(0,4));
+            setRegionTwo(userLocationTwo);
+            // 더불어 사용자가 제공한 위치 정보에 대해 조회를 한 결과를 조금 보여주도록 해야함.
         }
     }
 
@@ -109,11 +92,6 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo}) {
             navigate("/");
         }
     }
-
-    // 사용자가 조회 버튼을 누르면 해당 정보가 하위 component에 전달됨.
-    // const userSearch = () => {
-    //     setLocSearch(true);
-    // }
     
 
     useEffect(()=>{
@@ -144,10 +122,10 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo}) {
                             <button><FontAwesomeIcon icon={faMap}/> { regionOne}</button>
                             <DropDownContent>
                                 {
-                                    koreaOne.map((item, index)=>{
+                                    koreaOne.map((item)=>{
                                         return (
                                             <>
-                                                <div onClick={()=>onClickValue(item,1)} key={index}>{item.addr_name}</div>
+                                                <div onClick={()=>onClickValue(item,1)} key={item.cd}>{item.addr_name}</div>
                                             </>
                                         )
                                     })    
@@ -160,10 +138,10 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo}) {
                         <button><FontAwesomeIcon icon={faMapLocationDot}/> { regionTwo}</button>
                         <DropDownContent>
                                 {
-                                    koreaTwo && koreaTwo.map((item, index)=>{
+                                    koreaTwo.map((item)=>{
                                         return (
                                             <div className ={styles.koreaTwo}>
-                                                <div onClick={()=>onClickValue(item,2)} key={index}>{item}</div>
+                                                <div onClick={()=>onClickValue(item,2)} key={item.cd}>{item.addr_name}</div>
                                             </div>
                                         )
                                     })    
@@ -171,19 +149,13 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo}) {
                             </DropDownContent>
                         </DropDownContainer>
                     </li>
-                    {/* <li>
-                        <button onClick={userSearch}><FontAwesomeIcon icon={faMagnifyingGlassLocation}/> 조회</button>
-                    </li> */}
+                    <li>
+                        <button><FontAwesomeIcon icon={faMagnifyingGlassLocation}/> 조회</button>
+                    </li>
                 </ul>
-            </div>
-
-            <div className={styles.facility__content}>
-                {
-                    <UserLocFacility regionOne={regionOne} regionTwo={regionTwo} userLocationTwo={userLocationTwo}/>
-                }
             </div>
         </div>
     )
 }
 
-export default FindFacility;
+export default FindWantsLoc;

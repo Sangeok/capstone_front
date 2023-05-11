@@ -3,7 +3,9 @@ import {Map, MapMarker} from "react-kakao-maps-sdk";
 
 function KakaoComponent() {
     const { kakao } = window;
-	const [address, setAddress] = useState(); // 현재 좌표의 주소를 저장할 상태
+	const [address, setAddress] = useState(null); // 현재 좌표의 주소를 저장할 상태
+	const [regionOne, setRegionOne] = useState("지역");
+	const [regionTwo, setRegionTwo] = useState("시/군/구");
 	const [lat, setUserLat] = useState();
 	const [lng, setUserLng] = useState();
 
@@ -13,7 +15,7 @@ function KakaoComponent() {
         const callback = function (result, status) {
 			if (status === kakao.maps.services.Status.OK) {
 				setAddress(result[0].address);
-                console.log("address : " + address);
+                // console.log("address : " + address);
 			}
 		};
 		geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
@@ -38,27 +40,29 @@ function KakaoComponent() {
 	}
 
     useEffect(()=>{
-		
 		getlocation();
+		console.log("lat " + lat);
 		if(lat !== undefined && lng !== undefined) {
 			getAddress();
 		}
 
     },[lat, lng])
 
+	useEffect(()=>{
+		if(address !== null) {
+			setRegionOne(address.region_1depth_name);
+			setRegionTwo(address.region_2depth_name);
+		}
+	},[address])
+
 	return (
 		<>
-			<Map center={{ lat: 37.5566803113882, lng: 126.904501286522 }} style={{ width: '800px', height: '600px' }} level={3}>
-				<MapMarker position={{ lat: 37.5566803113882, lng: 126.904501286522 }} />
-				<button onClick={getAddress}>현재 좌표의 주소 얻기</button>
-			</Map>
-
 			{address && (
 				<div>
 					현재 좌표의 주소는..
 					<p>address_name: {address.address_name}</p>
-					<p>region_1depth_name: {address.region_1depth_name}</p>
-					<p>region_2depth_name: {address.region_2depth_name}</p>
+					<p>region_1depth_name: {regionOne}</p>
+					<p>region_2depth_name: {regionTwo}</p>
 					<p>region_3depth_name: {address.region_3depth_name}</p>
 				</div>
 			)}

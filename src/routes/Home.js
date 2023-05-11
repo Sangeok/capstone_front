@@ -7,6 +7,8 @@ import image1 from "../backgroundImage/image1.jpg";
 import image2 from "../backgroundImage/image2.jpg";
 import image3 from "../backgroundImage/image3.jpg";
 
+import KakaoComponent from "../components/KakaoComponent";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
@@ -52,29 +54,10 @@ animation: fadein 3s;
 `
 
 const Home = () => {
-    // const authURL = 'https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json';
-    // const [accessToken, setAccessToken] = useState();
-    // const consumer__key = '1c08dccc70914d3bbde1';
-    // const consumer_secret = '8a0afa457e9a47ca9976';
 
     let imageArr = [image1,image2,image3];
     const [mainImage, setMainImage] = useState(image1);
     let [lastRandom, setLastRandom] = useState(0);
-
-    // const getAccessToken = async() => {
-    //     try {
-    //         const response = await fetch(
-    //             `https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json?consumer_key=${consumer__key}&consumer_secret=${consumer_secret}`
-    //         );
-    //         const json = await response.json();
-    //         console.log(json);
-    //         setAccessToken(json.result.accessToken);
-    //         // getAccessToken는 비동기 함수이므로 getKorea가 useEffect에 같이 있으면 accessToken에 값이 부여 안될수도 있음.
-    //     }
-    //     catch(error){
-    //         console.log('error' + error);
-    //     }
-    // }
 
     useEffect(()=>{
         const randomImage = setInterval(()=>{

@@ -31,9 +31,6 @@ function MainHeader() {
     let dispatch = useDispatch();
     let showModal= useSelector((state)=> {return state.showModal});
 
-
-
-    {/* home이 아닌 다른 route라면 redux의 HeaderState를 변경 */}
     return (
         <div className={styles.main__header}>
             <ul>
