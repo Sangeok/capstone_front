@@ -4,6 +4,8 @@ import axios from "axios";
 import styles from "../styles/FindFacility.module.css";
 import styled from "styled-components";
 
+import mainImage from "../backgroundImage/image4.jpg";
+
 import UserLocFacility from "../components/UserLocFacility.js";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -32,8 +34,12 @@ const DropDownContainer = styled.div`
     }
 `
 
+const BackImg = styled.img`
+    background-size : contain;
+`
+
 // 현재 위치 기반으로 먼저 요양병원 시설을 찾아줌.
-function FindFacility({accessToken, userLocationOne ,userLocationTwo}) {
+function FindFacility({accessToken, userLocationOne ,userLocationTwo, lat, lng}) {
     const navigate = useNavigate();
     // AcessToken이 4시간마다 변경되므로 사이트에서 계속 가져와야함...
     const [koreaOne, setKoreaOne] = useState([]);
@@ -136,9 +142,12 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo}) {
 
         <div className ={styles.facility__content}>
             <div className = {styles.facility__none}/>
-
+                
             <div className={styles.facility__header}>
                 <ul>
+                    <li>
+                        <div className={styles.facility__text}>지역설정</div>
+                    </li>
                     <li>
                         <DropDownContainer>
                             <button><FontAwesomeIcon icon={faMap}/> { regionOne}</button>
@@ -179,7 +188,7 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo}) {
 
             <div className={styles.facility__content}>
                 {
-                    <UserLocFacility regionOne={regionOne} regionTwo={regionTwo} userLocationTwo={userLocationTwo}/>
+                    <UserLocFacility regionOne={regionOne} regionTwo={regionTwo} userLocationTwo={userLocationTwo} lat={lat} lng={lng}/>
                 }
             </div>
         </div>

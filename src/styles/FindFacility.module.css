@@ -20,6 +20,11 @@
     background-color: skyblue;
 }
 
+.facility__text {
+    font-weight: bold;
+    padding-top: 10px;
+}
+
 .facility__header ul {
     padding-top: 10px;
     list-style: none;

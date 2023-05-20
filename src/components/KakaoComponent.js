@@ -15,7 +15,6 @@ function KakaoComponent() {
         const callback = function (result, status) {
 			if (status === kakao.maps.services.Status.OK) {
 				setAddress(result[0].address);
-                // console.log("address : " + address);
 			}
 		};
 		geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);

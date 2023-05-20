@@ -105,7 +105,7 @@ function RouterWeb({isLoggedIn}) {
                         }
                         
                         {/* 사용자의 시/도 && 시/군/구에 대한 정보가 있거나 혹은 애초에 위치정보 제공을 거부했을 시 요양시설 찾기에 route를 허용*/}
-                        { (userLocationOne || userWanstLocation) && <Route path="/facility" element={<FindFacility accessToken={accessToken} userLocationOne={userLocationOne} userLocationTwo={userLocationTwo}/>}/> }
+                        { (userLocationOne || userWanstLocation) && <Route path="/facility" element={<FindFacility accessToken={accessToken} userLocationOne={userLocationOne} userLocationTwo={userLocationTwo} lat={lat} lng={lng}/>}/> }
                     </>
                 </Routes>
             </div>
