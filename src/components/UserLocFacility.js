@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import styles from "../styles/UserLocFacility.module.css"
+import { Link } from "react-router-dom";
 
 function UserLocFacility({regionOne, regionTwo, userLocationTwo, lat, lng}) {
     const [hospitals, setHospitals] = useState([]);
@@ -19,7 +20,6 @@ function UserLocFacility({regionOne, regionTwo, userLocationTwo, lat, lng}) {
     useEffect(()=> {
         if(hospitals != null) {
         const newHos = hospitals.map((item) => {
-            console.log("getDistance : " + item.YPos) // 각 요소 확인(여기서 item.PosY가 값이 없음.)
             return {
               ...item,
               distance: getDistance(lat, lng, item.YPos, item.XPos),
@@ -32,6 +32,8 @@ function UserLocFacility({regionOne, regionTwo, userLocationTwo, lat, lng}) {
         }
     },[hospitals])
 
+
+    // 위도 경도에 대해 2가지 장소가 정해졌을때, 직선거리를 구하는 함수
     function getDistance(lat1, lon1, lat2, lon2) {
         if ((lat1 == lat2) && (lon1 == lon2))
             return 0;
@@ -53,58 +55,38 @@ function UserLocFacility({regionOne, regionTwo, userLocationTwo, lat, lng}) {
         return dist;
     }
 
+    // distance 거리 순으로 오름차순
     const compareByDistance = (a,b) => 
         a.distance - b.distance;
-    
-    // const newHospitals = hospitals.map((item)=> ({
-    //     ...item,
-    //     distance : getDistance(lat, lng, item.PosY, item.PosX),
-    // }))
 
     // 만약 userLocationTwo에 값이 있다면 우선적으로 보여줘야함.
     const searchedLoc = newHospitals.filter((res)=>
         res.addr.includes(regionTwo)
     );
-
-    const searchedDistance = () => {
-        const selectForDistance = searchLoc.filter((res)=>
-            console.log(getDistance(lat, lng, res.PosY, res.PosX))
-        );
-    };
-
-    // searchedLoc에 저장된 값에 대해서 해당 값들의 
-
-    // const distanceLoc = () => {
-    //     hospitals.XPos
-    //     hospitals.YPos
-    // }
     
     return (
         
-        <div>
-            {
-                console.log("newHospitals : " + JSON.stringify(newHospitals))
-            }
+        <div className={styles.userLoc__container}>
             {
                 regionTwo && (
                     // 해당 결과가 여러개일 경우, 상단에 존재하는 5개의 결과물만 보여주도록 함.
                     searchedLoc.map((item, index)=>{
-                        // let distance = getDistance(item.YPos, item.XPos, lat, lng);
                         if(index < 5) {
                             return (
                                 <>
                                     <div className={styles.userLoc__content}>
+                                    <div className={styles.userLoc__number}>{index+1}</div>
                                         <ul>
                                             <li>
-                                                거리 : {item.distance}
-                                                <br/>
                                                 시설 종류 : {item.clCdNm}
                                                 <br/>
                                                 시설 이름 : {item.yadmNm}
                                                 <br/>
                                                 주소 : {item.addr}
                                                 <br/>
-                                                <a href ="https://github.com/boomaye36/capstone_project">자세히 보기...</a>
+                                                {/* postNo라는 id 개념의 속성을 통해 detail page를 만듬. */}
+                                                <Link to={`/detail/${item.postNo}`}
+                                                state={{item : item}}>자세히보기...</Link>
                                             </li>
                                         </ul>
                                     </div>
@@ -112,7 +94,7 @@ function UserLocFacility({regionOne, regionTwo, userLocationTwo, lat, lng}) {
                             )
                         }
                     })
-                    )
+                )
             }
         </div>
     )

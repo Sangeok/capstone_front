@@ -1,0 +1,8 @@
+.detail__container {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail__none {
+    height : 300px;
+}

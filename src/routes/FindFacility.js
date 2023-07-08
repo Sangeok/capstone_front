@@ -1,6 +1,5 @@
 import {useState, useEffect, Component} from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import styles from "../styles/FindFacility.module.css";
 import styled from "styled-components";
 
@@ -11,7 +10,7 @@ import UserLocFacility from "../components/UserLocFacility.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMap } from "@fortawesome/free-solid-svg-icons";
 import { faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
-import { faMagnifyingGlassLocation } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 //대한민국 전체 시/도에 대한 시/군/구
 // https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json?accessToken=343a03e8-2f83-4042-a88e-d8f341fd4c0e& 시/도 => 시/군/구(cd값을 통해서..)
@@ -34,10 +33,6 @@ const DropDownContainer = styled.div`
     }
 `
 
-const BackImg = styled.img`
-    background-size : contain;
-`
-
 // 현재 위치 기반으로 먼저 요양병원 시설을 찾아줌.
 function FindFacility({accessToken, userLocationOne ,userLocationTwo, lat, lng}) {
     const navigate = useNavigate();
@@ -48,7 +43,8 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo, lat, lng})
     const [regionOne, setRegionOne] = useState("지역");
     const [regionTwo, setRegionTwo] = useState("시/군/구");
 
-    // const [locSearch, setLocSearch] = useState(false);
+    const [searchCondition, setSearchCondition] = useState("거리순");
+    const searchConArr = ["거리순","조회순","별점순"];
 
     const url1 = `https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json?accessToken=${accessToken}`;
     const url2 = `https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json?accessToken=${accessToken}&cd=${getCd}`;
@@ -90,14 +86,20 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo, lat, lng})
     }
 
     const onClickValue = (item,number) => {
-        // setLocSearch(false);
+        
+        // 시,도 설정
         if(number === 1) {
             setGetCd(item.cd);
             setRegionOne(item.addr_name);
         }
+        // 시,군,구 설정
         else if(number === 2) {
             // 뒤에 구체적인 "구"까지 나오는 것에 대해 통일성을 부여하기 위해 4까지 자름.
             setRegionTwo(item);
+        }
+
+        else if(number === 3) {
+            setSearchCondition(item);
         }
 
     }
@@ -137,12 +139,10 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo, lat, lng})
 
       
       
-
+// 지역 설정 후 해당 지역에 속한 요양 시설을 보여줌.
     return (
-
         <div className ={styles.facility__content}>
             <div className = {styles.facility__none}/>
-                
             <div className={styles.facility__header}>
                 <ul>
                     <li>
@@ -171,7 +171,7 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo, lat, lng})
                                 {
                                     koreaTwo && koreaTwo.map((item, index)=>{
                                         return (
-                                            <div className ={styles.koreaTwo}>
+                                            <div>
                                                 <div onClick={()=>onClickValue(item,2)} key={index}>{item}</div>
                                             </div>
                                         )
@@ -180,13 +180,27 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo, lat, lng})
                             </DropDownContent>
                         </DropDownContainer>
                     </li>
-                    {/* <li>
-                        <button onClick={userSearch}><FontAwesomeIcon icon={faMagnifyingGlassLocation}/> 조회</button>
-                    </li> */}
+                    <li className={styles.facility__searchConli}>
+                        <DropDownContainer>
+                        {/* 기본 값이 거리순으로 되어있도록 함. */}
+                        <div className={styles.facility__searchCon}>{searchCondition } <FontAwesomeIcon icon={faArrowDown}/></div>
+                            <DropDownContent>
+                            {
+                                searchConArr.map((item,index)=>{
+                                    return (
+                                        <div>
+                                            <div onClick={()=>onClickValue(item,3)} key={index}>{item}</div>
+                                        </div>
+                                    )
+                                })
+                            }
+                            </DropDownContent>
+                        </DropDownContainer>
+                    </li>
                 </ul>
             </div>
 
-            <div className={styles.facility__content}>
+            <div className={styles.facility__searchResult}>
                 {
                     <UserLocFacility regionOne={regionOne} regionTwo={regionTwo} userLocationTwo={userLocationTwo} lat={lat} lng={lng}/>
                 }

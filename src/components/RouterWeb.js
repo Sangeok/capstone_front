@@ -6,6 +6,7 @@ import MyProfile from "../routes/MyProfile.js";
 import Auth from "../routes/Auth.js";
 import FindFacility from "../routes/FindFacility.js";
 import {Map, MapMarker} from "react-kakao-maps-sdk";
+import Detail from "../routes/Detail.js";
 
 function RouterWeb({isLoggedIn}) {
     const { kakao } = window;
@@ -91,13 +92,16 @@ function RouterWeb({isLoggedIn}) {
                     <>
                         
                         <Route path="/" element={<Home />}/>
+                        <Route path="/detail/:id" element={<Detail/>}></Route>
                         {
+                            // 로그인을 했다면, /myprofile에 접속가능.
                             isLoggedIn ? (
                                 <>
                                     <Route path="/myprofile" element={<MyProfile/>}></Route>
                                 </>
                             )
                             : (
+                                // 로그인을 안 했다면 /auth에 접속가능.
                                 <>
                                     <Route path="/auth" element={<Auth/>}></Route>
                                 </>
