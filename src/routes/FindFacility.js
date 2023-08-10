@@ -3,9 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "../styles/FindFacility.module.css";
 import styled from "styled-components";
 
-import mainImage from "../backgroundImage/image4.jpg";
-
-import UserLocFacility from "../components/UserLocFacility.js";
+import UserLocFacility from "../components/facility/UserLocFacility.js";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMap } from "@fortawesome/free-solid-svg-icons";
@@ -117,11 +115,6 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo, lat, lng})
             navigate("/");
         }
     }
-
-    // 사용자가 조회 버튼을 누르면 해당 정보가 하위 component에 전달됨.
-    // const userSearch = () => {
-    //     setLocSearch(true);
-    // }
     
 
     useEffect(()=>{
@@ -139,11 +132,11 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo, lat, lng})
 
       
       
-// 지역 설정 후 해당 지역에 속한 요양 시설을 보여줌.
+    // 지역 설정 후 해당 지역에 속한 요양 시설을 보여줌.
     return (
         <div className ={styles.facility__content}>
             <div className = {styles.facility__none}/>
-            <div className={styles.facility__header}>
+            <div className = {styles.facility__header}>
                 <ul>
                     <li>
                         <div className={styles.facility__text}>지역설정</div>

@@ -3,13 +3,12 @@
 import axios from "axios";
 
 import {useEffect, useState} from "react";
-import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 import { useDispatch, useSelector } from "react-redux";
-import { changeState } from "../store.js"; 
+import { changeState } from "../../store.js"; 
 
-import styles from "../styles/SearchFacility.module.css";
+import styles from "../../styles/SearchFacility.module.css";
 
 // 이게 있어야 modal로 뜸
 import 'bootstrap/dist/css/bootstrap.min.css';

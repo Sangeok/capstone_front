@@ -1,11 +1,13 @@
 import {useEffect, useState} from "react";
-import styles from "../styles/UserLocFacility.module.css"
+import styles from "../../styles/UserLocFacility.module.css"
 import { Link } from "react-router-dom";
+import Loading from "../loading";
 
 function UserLocFacility({regionOne, regionTwo, userLocationTwo, lat, lng}) {
     const [hospitals, setHospitals] = useState([]);
     const [newHospitals, setNewHospitals] = useState([]);
     const [searchLoc, setSearchLoc] = useState({});
+    const [loading, setLoading] = useState(true);
 
     // hospitals에 병원API 정보를 넣음.
     useEffect(()=>{
@@ -13,6 +15,7 @@ function UserLocFacility({regionOne, regionTwo, userLocationTwo, lat, lng}) {
         .then((response)=>response.json())
         .then((json)=>{
             setHospitals(json.response.body.items.item);
+            setLoading(false);
         });
     },[])
 
@@ -26,10 +29,11 @@ function UserLocFacility({regionOne, regionTwo, userLocationTwo, lat, lng}) {
             };
           });
     
-        // 사용자 기준 거리순으로 정렬 후 state에 저장
-        newHos.sort(compareByDistance);
-        setNewHospitals(newHos);
+            // 사용자 기준 거리순으로 정렬 후 state에 저장
+            newHos.sort(compareByDistance);
+            setNewHospitals(newHos);
         }
+        
     },[hospitals])
 
 
@@ -65,10 +69,10 @@ function UserLocFacility({regionOne, regionTwo, userLocationTwo, lat, lng}) {
     );
     
     return (
-        
         <div className={styles.userLoc__container}>
             {
-                regionTwo && (
+                loading ? ( <div className={styles.userLoc__loading}><Loading/></div> )
+                : (
                     // 해당 결과가 여러개일 경우, 상단에 존재하는 5개의 결과물만 보여주도록 함.
                     searchedLoc.map((item, index)=>{
                         if(index < 5) {

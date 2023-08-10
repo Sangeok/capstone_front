@@ -1,12 +1,12 @@
 import {useState, useEffect} from "react";
 import {Routes, Route} from "react-router-dom";
+
 import MainHeader from "./MainHeader.js"
-import Home from "../routes/Home.js"
-import MyProfile from "../routes/MyProfile.js";
-import Auth from "../routes/Auth.js";
-import FindFacility from "../routes/FindFacility.js";
-import {Map, MapMarker} from "react-kakao-maps-sdk";
-import Detail from "../routes/Detail.js";
+import Home from "../../routes/Home.js"
+import MyProfile from "../../routes/MyProfile.js";
+import Auth from "../../routes/Auth.js";
+import FindFacility from "../../routes/FindFacility.js";
+import Detail from "../../routes/Detail.js";
 
 function RouterWeb({isLoggedIn}) {
     const { kakao } = window;
@@ -28,7 +28,6 @@ function RouterWeb({isLoggedIn}) {
             );
             const json = await response.json();
             setAccessToken(json.result.accessToken);
-
         }
         catch(error){
             console.log('error' + error);

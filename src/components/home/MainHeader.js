@@ -1,6 +1,6 @@
-import {useState, useEffect} from "react";
 import styled from 'styled-components';
-import styles from "../styles/MainHeader.module.css";
+import styles from "../../styles/MainHeader.module.css";
+
 import {Link} from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,21 +9,21 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faHospital } from '@fortawesome/free-solid-svg-icons';
 
 import { useDispatch, useSelector } from "react-redux";
+import { changeState } from "../../store.js"; 
 
 import SearchFacility from "./SearchFacility";
-import { changeState } from "../store.js"; 
+
 
 const StyledLink = styled(Link)`
-        color : black;
-        font-weight : 800;
-        text-decoration: none;
-        
-    `
-    const style = {
-        color : "black",
-        fontWeight : "800",
-        cursor: "pointer",
-    }
+    color : black;
+    font-weight : 800;
+    text-decoration: none;
+`
+const style = {
+    color : "black",
+    fontWeight : "800",
+    cursor: "pointer",
+}
     
 function MainHeader() {
 
