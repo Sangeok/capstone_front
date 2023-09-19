@@ -1,0 +1,44 @@
+.detail__container {
+    display: flex;
+    flex-direction: column;
+    width : 100%;
+    height: 100%;
+    /* justify-content: center; */
+}
+
+.detail__none {
+    height : 100px;
+}
+
+.detail__content {
+    display : flex;
+    justify-content: center;
+    width : 100%;
+    height : 100%;
+    background-color: rgb(242, 240, 240);
+    box-shadow: 0px 8px 6px -6px #666;
+}
+
+.detail__wrapper{
+    display : flex;
+    flex-direction: column;
+    padding-top: 3%;
+    padding-bottom : 5%;
+    /* align-items: center; */
+}
+
+.detail__ul {
+    list-style: none;
+}
+
+.detail__ul li{
+    padding-bottom: 1%;
+}
+
+.detail__hr {
+    border: none; /* 기본 경계선 제거 */
+    height: 2px; /* 수평선의 높이 */
+    background-color: #333; /* 수평선의 배경 색상 */
+    margin: 20px 0; /* 수평선 위 아래 여백 설정 */
+	box-shadow: 0 10px 10px -10px #8c8b8b inset;
+}

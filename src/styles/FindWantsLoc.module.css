@@ -1,0 +1,37 @@
+.facility__content {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Karla', sans-serif;
+}
+
+/* Mainheader크기만큼 none이라는 div박스 추가 */
+.facility__none {
+    height : 100px;
+}
+
+.facility__header {
+    display : flex;
+    justify-content: space-around;
+    align-items: center;
+    width : 100%;
+    height : 100px;
+    background-color: skyblue;
+}
+
+.facility__header ul {
+    padding-top: 10px;
+    list-style: none;
+}
+
+.facility__header li {
+    float : left;
+    padding-left: 80px;
+    padding-right : 80px;
+}
+
+.facility__header button {
+    width : 150px;
+    height : 50px;
+    border-radius: 40px;
+    background-color: white;
+}
