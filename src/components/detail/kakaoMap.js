@@ -1,5 +1,4 @@
 import { Map, MapMarker } from "react-kakao-maps-sdk";
-import axios from "axios";
 
 const kakaoMap = ({lat, lng}) => {
 

@@ -3,38 +3,32 @@ import styles from "../../styles/UserLocFacility.module.css"
 import { Link } from "react-router-dom";
 import Loading from "../loading";
 
+import { silverDataAtom } from "../../recoil/silverDataAtom.js";
+import { useRecoilState } from "recoil";
+
 function UserLocFacility({regionOne, regionTwo, userLocationTwo, lat, lng}) {
-    const [hospitals, setHospitals] = useState([]);
     const [newHospitals, setNewHospitals] = useState([]);
     const [searchLoc, setSearchLoc] = useState({});
     const [loading, setLoading] = useState(true);
 
-    // hospitals에 병원API 정보를 넣음.
-    useEffect(()=>{
-        fetch('https://apis.data.go.kr/B551182/hospInfoServicev2/getHospBasisList?serviceKey=jxwOJdF3W7dg4P7he9%2F2hwaPwgDszkbSReBLZF6tdG55G%2BcZQflK6SsRbR%2BioSWMeADf0A3vKKiSAm3JgWUU4A%3D%3D&pageNo=1&numOfRows=100&sidoCd=310000&zipCd=2040&clCd=28&_type=json')
-        .then((response)=>response.json())
-        .then((json)=>{
-            setHospitals(json.response.body.items.item);
-            setLoading(false);
-        });
-    },[])
+    const [silverData, serSilverData] = useRecoilState(silverDataAtom);
+    
 
     // hospitals에 값이 입력되었을 때마다 실행
     useEffect(()=> {
-        if(hospitals != null) {
-        const newHos = hospitals.map((item) => {
+        const newHos = silverData.map((item) => {
             return {
-              ...item,
-              distance: getDistance(lat, lng, item.YPos, item.XPos),
-            };
-          });
+             ...item,
+             distance: getDistance(lat, lng, item.ypos, item.xpos),
+           };
+         });
     
-            // 사용자 기준 거리순으로 정렬 후 state에 저장
+           // 사용자 기준 거리순으로 정렬 후 state에 저장
             newHos.sort(compareByDistance);
             setNewHospitals(newHos);
-        }
-        
-    },[hospitals])
+            setLoading(false);
+            console.log(silverData);
+    },[])
 
 
     // 위도 경도에 대해 2가지 장소가 정해졌을때, 직선거리를 구하는 함수
@@ -65,7 +59,7 @@ function UserLocFacility({regionOne, regionTwo, userLocationTwo, lat, lng}) {
 
     // 만약 userLocationTwo에 값이 있다면 우선적으로 보여줘야함.
     const searchedLoc = newHospitals.filter((res)=>
-        res.addr.includes(regionTwo)
+        res.location.includes(regionTwo)
     );
     
     return (
@@ -82,14 +76,16 @@ function UserLocFacility({regionOne, regionTwo, userLocationTwo, lat, lng}) {
                                     <div className={styles.userLoc__number}>{index+1}</div>
                                         <ul>
                                             <li>
-                                                시설 종류 : {item.clCdNm}
+                                                시설 이름 : {item.name}
                                                 <br/>
-                                                시설 이름 : {item.yadmNm}
+                                                주소 : {item.location}
                                                 <br/>
-                                                주소 : {item.addr}
+                                                전화번호 : {item.phonenumber}
+                                                <br/>
+                                                진료 과목 : {item.category}
                                                 <br/>
                                                 {/* postNo라는 id 개념의 속성을 통해 detail page를 만듬. */}
-                                                <Link to={`/detail/${item.postNo}`}
+                                                <Link to={`/detail/${item.id}`}
                                                 state={{item : item}}>자세히보기...</Link>
                                             </li>
                                         </ul>

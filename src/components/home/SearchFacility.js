@@ -2,6 +2,8 @@
 
 import axios from "axios";
 
+import { Link } from "react-router-dom";
+
 import {useEffect, useState} from "react";
 import Modal from 'react-bootstrap/Modal';
 
@@ -16,22 +18,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
-function FindFacility() {
+import { silverDataAtom } from "../../recoil/silverDataAtom.js";
+import { useRecoilState } from "recoil";
 
-    // BIZPLC_NM : API 병원 이름
-    const [hospitals, setHospitals] = useState([]);
+function FindFacility() {
     const [search, setSearch] = useState("");
 
-    useEffect(()=>{
-        fetch('https://openapi.gg.go.kr/RecuperationHospital?KEY=e773163cf73d429b81008f1c8b081444&Type=json')
-        .then((response)=>response.json())
-        .then((json)=>{
-            setHospitals(json.RecuperationHospital[1].row);
-        });
-    },[])
+    const [silverData, serSilverData] = useRecoilState(silverDataAtom);
 
-    const searched = hospitals.filter((item)=>
-        item.BIZPLC_NM.includes(search)
+    const searched = silverData.filter((item)=>
+        item.name.includes(search)
     );
 
     const onChange = (event) => {
@@ -92,11 +88,16 @@ function FindFacility() {
                                     <>
                                         <ul>
                                             <li>
-                                                시설 이름 : {item.BIZPLC_NM}
+                                                시설 이름 : {item.name}
                                                 <br/>
-                                                주소 : {item.REFINE_ROADNM_ADDR}
+                                                주소 : {item.location}
                                                 <br/>
-                                                <a href ="https://github.com/boomaye36/capstone_project">자세히 보기...</a>
+                                                전화번호 : {item.phonenumber}
+                                                <br/>
+                                                진료과목 : {item.category}
+                                                <br/>
+                                                <Link to={`/detail/${item.id}`}
+                                                state={{item : item}}>자세히보기...</Link>
                                             </li>
                                         </ul>
                                     </>
