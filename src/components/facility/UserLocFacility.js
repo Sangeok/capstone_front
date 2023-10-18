@@ -5,8 +5,14 @@ import Loading from "../loading";
 
 import { silverDataAtom } from "../../recoil/silverDataAtom.js";
 import { useRecoilState } from "recoil";
+import '../../styles/Paging.css';
+import Pagination from "react-js-pagination";
 
 function UserLocFacility({regionOne, regionTwo, userLocationTwo, lat, lng}) {
+    const limit = 5;
+    const [page, setPage] = useState(1);
+    const offset = (page - 1) * limit;
+
     const [newHospitals, setNewHospitals] = useState([]);
     const [searchLoc, setSearchLoc] = useState({});
     const [loading, setLoading] = useState(true);
@@ -61,6 +67,10 @@ function UserLocFacility({regionOne, regionTwo, userLocationTwo, lat, lng}) {
     const searchedLoc = newHospitals.filter((res)=>
         res.location.includes(regionTwo)
     );
+
+    const handlePageChange = (page) => {
+        setPage(page);
+    };
     
     return (
         <div className={styles.userLoc__container}>
@@ -68,7 +78,7 @@ function UserLocFacility({regionOne, regionTwo, userLocationTwo, lat, lng}) {
                 loading ? ( <div className={styles.userLoc__loading}><Loading/></div> )
                 : (
                     // 해당 결과가 여러개일 경우, 상단에 존재하는 5개의 결과물만 보여주도록 함.
-                    searchedLoc.map((item, index)=>{
+                    searchedLoc.slice(offset, offset + limit).map((item, index)=>{
                         if(index < 5) {
                             return (
                                 <>
@@ -95,6 +105,19 @@ function UserLocFacility({regionOne, regionTwo, userLocationTwo, lat, lng}) {
                         }
                     })
                 )
+            }
+            {
+                searchedLoc && <div className = {styles.userLoc__footer}>
+                   <Pagination
+                        activePage={page}
+                        itemsCountPerPage={3}
+                        totalItemsCount={searchedLoc.length}
+                        pageRangeDisplayed={5}
+                        prevPageText={"‹"}
+                        nextPageText={"›"}
+                        onChange={handlePageChange}
+                    />
+                </div>
             }
         </div>
     )

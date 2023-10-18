@@ -31,14 +31,26 @@
     margin-right : 10px;
 }
 
+.search__content {
+    display : flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
 .search__result {
     height : 500px;
 }
 
 .search__result ul {
     list-style: none;
+    padding : 15px;
 }
 
 .search__result a {
     color : blue;
+}
+
+.search__footer {
+    width : 100%;
+    padding-bottom: 10px;
 }
