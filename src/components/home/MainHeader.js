@@ -49,9 +49,6 @@ function MainHeader() {
                     {/* 문제 : 이렇게하면 고정된 header를 다시 클릭하면 상태가 변경됨... 즉 useEffect로 각 routes에서 dispatch를 하는 것이 좋아보임. */}
                     <StyledLink to="/facility"><FontAwesomeIcon icon={faHospital}/> 요양 시설찾기</StyledLink>
                 </li>
-                <li>
-                    <StyledLink to="/auth"><FontAwesomeIcon icon={faUser}/> 로그인/회원가입</StyledLink>
-                </li>
             </ul>
             {
                 ( showModal && <SearchFacility/> )

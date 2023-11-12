@@ -42,3 +42,17 @@
     margin: 20px 0; /* 수평선 위 아래 여백 설정 */
 	box-shadow: 0 10px 10px -10px #8c8b8b inset;
 }
+
+.detail__relate {
+    display : flex;
+    flex-direction: column;
+}
+
+.detail__relateContent {
+    display: flex;
+}
+
+.detail__relateMap {
+    display : inline;
+    padding-top: 16px;
+}

@@ -11,6 +11,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 
+import axios from "axios";
+import { relateDataAtom } from "../recoil/relateDataAtom.js";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+
 // fade-in으로 img를 생성하기 위해 styled-components를 사용
 const StyledImg = styled.img`
 animation: fadein 3s;
@@ -56,6 +60,7 @@ const Home = () => {
     let imageArr = [image1,image2,image3];
     const [mainImage, setMainImage] = useState(image1);
     let [lastRandom, setLastRandom] = useState(0);
+
 
     useEffect(()=>{
         const randomImage = setInterval(()=>{

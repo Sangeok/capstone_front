@@ -1,12 +1,18 @@
 import {useState, useEffect} from "react";
 import {Routes, Route} from "react-router-dom";
 
+import axios from "axios";
+
+import { relateDataAtom } from "../../recoil/relateDataAtom.js";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+
 import MainHeader from "./MainHeader.js"
 import Home from "../../routes/Home.js"
 import MyProfile from "../../routes/MyProfile.js";
 import Auth from "../../routes/Auth.js";
 import FindFacility from "../../routes/FindFacility.js";
 import Detail from "../../routes/Detail.js";
+
 
 function RouterWeb({isLoggedIn}) {
     const { kakao } = window;
@@ -92,21 +98,6 @@ function RouterWeb({isLoggedIn}) {
                         
                         <Route path="/" element={<Home />}/>
                         <Route path="/detail/:id" element={<Detail/>}></Route>
-                        {
-                            // 로그인을 했다면, /myprofile에 접속가능.
-                            isLoggedIn ? (
-                                <>
-                                    <Route path="/myprofile" element={<MyProfile/>}></Route>
-                                </>
-                            )
-                            : (
-                                // 로그인을 안 했다면 /auth에 접속가능.
-                                <>
-                                    <Route path="/auth" element={<Auth/>}></Route>
-                                </>
-                            )
-                        }
-                        
                         {/* 사용자의 시/도 && 시/군/구에 대한 정보가 있거나 혹은 애초에 위치정보 제공을 거부했을 시 요양시설 찾기에 route를 허용*/}
                         { (userLocationOne || userWanstLocation) && <Route path="/facility" element={<FindFacility accessToken={accessToken} userLocationOne={userLocationOne} userLocationTwo={userLocationTwo} lat={lat} lng={lng}/>}/> }
                     </>

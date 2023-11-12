@@ -1,5 +1,6 @@
 import {useState, useEffect, Component} from "react";
 import { useNavigate } from "react-router-dom";
+
 import styles from "../styles/FindFacility.module.css";
 import styled from "styled-components";
 
@@ -8,18 +9,18 @@ import UserLocFacility from "../components/facility/UserLocFacility.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMap } from "@fortawesome/free-solid-svg-icons";
 import { faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
-import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 //대한민국 전체 시/도에 대한 시/군/구
 // https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json?accessToken=343a03e8-2f83-4042-a88e-d8f341fd4c0e& 시/도 => 시/군/구(cd값을 통해서..)
 const DropDownContent = styled.div`
-    display : none;
-    position : absolute;
-    z-index : 1;
-    font-weight : 400;
+    display: none;
+    position: absolute;
     background-color: #f9f9f9;
-    min-width : 150px;
-    border-bottom : 40px;
+    min-width: 150px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    border-radius: 40px;
+    z-index: 1;
 `
 DropDownContent.displayName = DropDownContent;
 
@@ -40,9 +41,6 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo, lat, lng})
     const [getCd, setGetCd] = useState();
     const [regionOne, setRegionOne] = useState("지역");
     const [regionTwo, setRegionTwo] = useState("시/군/구");
-
-    const [searchCondition, setSearchCondition] = useState("거리순");
-    const searchConArr = ["거리순","조회순","별점순"];
 
     const url1 = `https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json?accessToken=${accessToken}`;
     const url2 = `https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json?accessToken=${accessToken}&cd=${getCd}`;
@@ -96,10 +94,6 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo, lat, lng})
             setRegionTwo(item);
         }
 
-        else if(number === 3) {
-            setSearchCondition(item);
-        }
-
     }
 
     const checkUserLocation = () => {
@@ -129,8 +123,6 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo, lat, lng})
         checkAccessToken();
         checkUserLocation();
     }, [])
-
-      
       
     // 지역 설정 후 해당 지역에 속한 요양 시설을 보여줌.
     return (
@@ -170,23 +162,6 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo, lat, lng})
                                         )
                                     })    
                                 }
-                            </DropDownContent>
-                        </DropDownContainer>
-                    </li>
-                    <li className={styles.facility__searchConli}>
-                        <DropDownContainer>
-                        {/* 기본 값이 거리순으로 되어있도록 함. */}
-                        <div className={styles.facility__searchCon}>{searchCondition } <FontAwesomeIcon icon={faArrowDown}/></div>
-                            <DropDownContent>
-                            {
-                                searchConArr.map((item,index)=>{
-                                    return (
-                                        <div>
-                                            <div onClick={()=>onClickValue(item,3)} key={index}>{item}</div>
-                                        </div>
-                                    )
-                                })
-                            }
                             </DropDownContent>
                         </DropDownContainer>
                     </li>
