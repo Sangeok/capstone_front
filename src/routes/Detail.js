@@ -18,7 +18,6 @@ function Detail() {
     const [silverData, serSilverData] = useRecoilState(silverDataAtom);
 
     useEffect(() => {
-        console.log("hihi")
         axios.get(`http://localhost:8080/relate1?original_hospital=${data.name}`)
         .then(res => {
             setRelateData(res.data.newList);

@@ -3,17 +3,13 @@ import {React, useEffect, useState, memo} from "react";
 import styles from "../styles/Home.module.css";
 import styled from 'styled-components';
 
-import image1 from "../backgroundImage/image1.jpg";
-import image2 from "../backgroundImage/image2.jpg";
-import image3 from "../backgroundImage/image3.jpg";
+import image1 from "../assets/image1.jpg";
+import image2 from "../assets/image2.jpg";
+import image3 from "../assets/image3.jpg";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
-
-import axios from "axios";
-import { relateDataAtom } from "../recoil/relateDataAtom.js";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 // fade-in으로 img를 생성하기 위해 styled-components를 사용
 const StyledImg = styled.img`
@@ -72,7 +68,6 @@ const Home = () => {
             setMainImage(imageArr[random]);
             setLastRandom(random);
         }, 20000)
-        // getAccessToken();
         return () => clearInterval(randomImage);
     }, [imageArr])
 

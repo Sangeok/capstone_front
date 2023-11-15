@@ -1,4 +1,4 @@
-import {useState, useEffect, Component} from "react";
+import {useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 
 import styles from "../styles/FindFacility.module.css";
@@ -135,7 +135,7 @@ function FindFacility({accessToken, userLocationOne ,userLocationTwo, lat, lng})
                     </li>
                     <li>
                         <DropDownContainer>
-                            <button><FontAwesomeIcon icon={faMap}/> { regionOne}</button>
+                            <button><FontAwesomeIcon icon={faMap}/> {regionOne}</button>
                             <DropDownContent>
                                 {
                                     koreaOne.map((item, index)=>{

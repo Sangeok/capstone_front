@@ -1,10 +1,6 @@
-// modal
-
-import axios from "axios";
-
 import { Link } from "react-router-dom";
 
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import Modal from 'react-bootstrap/Modal';
 
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +8,6 @@ import { changeState } from "../../store.js";
 
 import styles from "../../styles/SearchFacility.module.css";
 
-// 이게 있어야 modal로 뜸
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/Paging.css';
 
@@ -59,14 +54,13 @@ function FindFacility() {
 
     return (
         <>
-        <Modal
-            show={showModal} 
-            onHide={handleClose}
-            // modal size조절
-            size="lg"
-            className={styles.modal}
-        >
-            
+            <Modal
+                show={showModal} 
+                onHide={handleClose}
+                // modal size조절
+                size="lg"
+                className={styles.modal}
+            >
                 <Modal.Header closeButton>
                 <Modal.Title id="example-custom-modal-styling-title">
                     시설검색
@@ -91,9 +85,7 @@ function FindFacility() {
                 <div className = {styles.search__content}>
                     <div className = {styles.search__result}>
                         {
-                            // search라는 state에 무언가 입력되지 않으면 아무것도 보이지 않음. 무언가 입력이 되었다면 그때 병원을 찾아서 사용자에게 보여줌.
                             search ? (
-                            // 해당 결과가 여러개일 경우, 상단에 존재하는 3개의 결과물만 보여주도록 함.
                             searched.slice(offset, offset + limit).map((item, index)=>{
                                 if(index < 3) {
                                     return (
@@ -121,7 +113,8 @@ function FindFacility() {
                         }
                     </div>
                     {
-                        search && <div className = {styles.search__footer}>
+                        search && 
+                        <div className = {styles.search__footer}>
                             <Pagination
                                 activePage={page}
                                 itemsCountPerPage={3}
@@ -135,8 +128,8 @@ function FindFacility() {
                     }
                 </div>
 
-            
-        </Modal>
+                
+            </Modal>
         </>
     );
 }

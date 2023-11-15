@@ -14,7 +14,6 @@ function UserLocFacility({regionOne, regionTwo, userLocationTwo, lat, lng}) {
     const offset = (page - 1) * limit;
 
     const [newHospitals, setNewHospitals] = useState([]);
-    const [searchLoc, setSearchLoc] = useState({});
     const [loading, setLoading] = useState(true);
 
     const [silverData, serSilverData] = useRecoilState(silverDataAtom);
@@ -33,7 +32,6 @@ function UserLocFacility({regionOne, regionTwo, userLocationTwo, lat, lng}) {
             newHos.sort(compareByDistance);
             setNewHospitals(newHos);
             setLoading(false);
-            console.log(silverData);
     },[])
 
 

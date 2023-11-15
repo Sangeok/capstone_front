@@ -1,15 +1,8 @@
 import {useState, useEffect} from "react";
 import {Routes, Route} from "react-router-dom";
 
-import axios from "axios";
-
-import { relateDataAtom } from "../../recoil/relateDataAtom.js";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-
 import MainHeader from "./MainHeader.js"
 import Home from "../../routes/Home.js"
-import MyProfile from "../../routes/MyProfile.js";
-import Auth from "../../routes/Auth.js";
 import FindFacility from "../../routes/FindFacility.js";
 import Detail from "../../routes/Detail.js";
 
@@ -21,16 +14,13 @@ function RouterWeb({isLoggedIn}) {
 	const [userLocationTwo, setuserLocationTwo] = useState();
 	const [lat, setUserLat] = useState();
 	const [lng, setUserLng] = useState();
-    const [userWanstLocation , setuserWanstLocation] = useState(false);
-
+    const [userWanstLocation , setuserWanstLocation] = useState(false)
     const [accessToken, setAccessToken] = useState();
-    const consumer__key = '1c08dccc70914d3bbde1';
-    const consumer_secret = '8a0afa457e9a47ca9976';
 
     const getAccessToken = async() => {
         try {
             const response = await fetch(
-                `https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json?consumer_key=${consumer__key}&consumer_secret=${consumer_secret}`
+                `https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json?consumer_key=${process.env.REACT_APP_CONSUMER__KEY}&consumer_secret=${process.env.REACT_APP_CONSUMER__SECRET}`
             );
             const json = await response.json();
             setAccessToken(json.result.accessToken);
@@ -75,7 +65,6 @@ function RouterWeb({isLoggedIn}) {
 		if(lat !== undefined && lng !== undefined) {
 			getAddress();
 		}
-
     },[lat, lng])
 
 	useEffect(()=>{
@@ -89,13 +78,11 @@ function RouterWeb({isLoggedIn}) {
         getAccessToken();
     },[])
 
-
     return (
             <div>
                 <MainHeader isLoggedIn={isLoggedIn}/>
                 <Routes>
                     <>
-                        
                         <Route path="/" element={<Home />}/>
                         <Route path="/detail/:id" element={<Detail/>}></Route>
                         {/* 사용자의 시/도 && 시/군/구에 대한 정보가 있거나 혹은 애초에 위치정보 제공을 거부했을 시 요양시설 찾기에 route를 허용*/}
